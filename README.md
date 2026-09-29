@@ -2,7 +2,7 @@
 
 Projeto de controle financeiro desenvolvido com **Java, Spring Boot e Angular**.
 
-Estou desenvolvendo o projeto passo a passo e utilizando o Trello para acompanhar as tarefas e evolução.
+Estou desenvolvendo o projeto, passo a passo, e utilizando o Trello para acompanhar as tarefas e evolução.
 
 ## 📋 Acompanhe o desenvolvimento
 

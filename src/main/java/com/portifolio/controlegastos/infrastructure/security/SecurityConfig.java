@@ -53,24 +53,15 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
-                                // Permite API VIACEP
-                                .requestMatchers(HttpMethod.GET,"/usuario/endereco/**")
-                                .permitAll()
                                 // Permite acesso ao login
                                 .requestMatchers(HttpMethod.POST, "/usuario/login")
                                 .permitAll()
-                                // Permite criação de usuário
-                                .requestMatchers(HttpMethod.POST, "/usuario")
+                                // Permite criação de usuários
+                                .requestMatchers(HttpMethod.POST, "/api/usuario/v1")
                                 .permitAll()
-//                              .requestMatchers(HttpMethod.GET, "/usuario")
-//                              .permitAll()
-//                              .requestMatchers(HttpMethod.GET, "/usuario/pesquisa")
-//                              .permitAll()
-//                              .requestMatchers(HttpMethod.DELETE, "/usuario/{email}")
-//                              .permitAll()
                                 // Exige autenticação para rotas de usuário
-                                .requestMatchers("/usuario/**")
-                                .authenticated()
+                                //.requestMatchers("/usuario/**")
+                                //.authenticated()
                                 // Exige autenticação para todas as outras
                                 .anyRequest()
                                 .authenticated()
