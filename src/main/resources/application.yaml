@@ -1,3 +1,22 @@
 spring:
   application:
     name: controle-gastos
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/controle_gastos
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+jwt:
+  secret: ${JWT_SECRET}
+
+server:
+  port: 8080
