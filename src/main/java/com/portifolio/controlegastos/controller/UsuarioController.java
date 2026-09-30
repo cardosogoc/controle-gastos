@@ -1,7 +1,6 @@
 package com.portifolio.controlegastos.controller;
 
 import com.portifolio.controlegastos.business.dto.usuario.LoginRequest;
-import com.portifolio.controlegastos.business.dto.usuario.LoginResponse;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioRequest;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioResponse;
 import com.portifolio.controlegastos.business.service.UsuarioService;

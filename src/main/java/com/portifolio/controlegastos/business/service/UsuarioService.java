@@ -1,15 +1,15 @@
 package com.portifolio.controlegastos.business.service;
 
 import com.portifolio.controlegastos.business.dto.usuario.LoginRequest;
-import com.portifolio.controlegastos.business.dto.usuario.LoginResponse;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioRequest;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioResponse;
 import com.portifolio.controlegastos.business.mapper.UsuarioMapper;
+import com.portifolio.controlegastos.exception.ConflictException;
+import com.portifolio.controlegastos.exception.UnauthorizedException;
 import com.portifolio.controlegastos.infrastructure.entity.Usuario;
 import com.portifolio.controlegastos.infrastructure.repository.UsuarioRepository;
 import com.portifolio.controlegastos.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,10 +40,10 @@ public class UsuarioService {
         try{
             boolean existe = verificaEmailExistente(email);
             if (existe){
-                throw new RuntimeException("Email já cadastrado" + email);
+                throw new ConflictException("Email já cadastrado" + email);
             }
-        } catch (RuntimeException e){
-            throw new RuntimeException("Email já cadastrado" + e);
+        } catch (ConflictException e){
+            throw new ConflictException("Email já cadastrado" + e);
         }
     }
 
@@ -59,7 +59,7 @@ public class UsuarioService {
                             dto.senha()));
             return "Bearer " + jwtUtil.generateToken(authentication.getName());
         } catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e){
-            throw new RuntimeException("Usuario ou Senha inválidos", e);
+            throw new UnauthorizedException("Usuario ou Senha inválidos", e);
         }
     }
 }
