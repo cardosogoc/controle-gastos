@@ -1,5 +1,7 @@
 package com.portifolio.controlegastos.controller;
 
+import com.portifolio.controlegastos.business.dto.usuario.LoginRequest;
+import com.portifolio.controlegastos.business.dto.usuario.LoginResponse;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioRequest;
 import com.portifolio.controlegastos.business.dto.usuario.UsuarioResponse;
 import com.portifolio.controlegastos.business.service.UsuarioService;
@@ -23,5 +25,10 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody UsuarioRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarUsuario(dto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest dto){
+        return ResponseEntity.ok().body(service.login(dto));
     }
 }

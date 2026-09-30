@@ -54,7 +54,7 @@ public class SecurityConfig {
                                         "/swagger-ui.html"
                                 ).permitAll()
                                 // Permite acesso ao login
-                                .requestMatchers(HttpMethod.POST, "/usuario/login")
+                                .requestMatchers(HttpMethod.POST, "/api/usuario/v1/login")
                                 .permitAll()
                                 // Permite criação de usuários
                                 .requestMatchers(HttpMethod.POST, "/api/usuario/v1")
