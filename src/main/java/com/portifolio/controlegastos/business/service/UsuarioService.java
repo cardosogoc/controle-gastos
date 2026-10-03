@@ -62,4 +62,22 @@ public class UsuarioService {
             throw new UnauthorizedException("Usuario ou Senha inválidos", e);
         }
     }
+
+    public UsuarioResponse editarPerfil(String token, UsuarioRequest dto) {
+
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+
+        Usuario entity = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email não localizado"));
+
+        mapper.atualizarUsuario(dto, entity);
+
+        if (dto.senha() != null && !dto.senha().isBlank()) {
+            entity.setSenha(passwordEncoder.encode(dto.senha()));
+        }
+
+        return mapper.paraUsuarioDTO(repository.save(entity));
+    }
+
+
 }
