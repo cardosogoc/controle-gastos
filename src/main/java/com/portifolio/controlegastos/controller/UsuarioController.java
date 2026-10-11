@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/usuario/v1")
 @RequiredArgsConstructor
@@ -19,18 +21,29 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody UsuarioRequest dto){
+    public ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody UsuarioRequest dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarUsuario(dto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest dto){
+    public ResponseEntity<String> login(@RequestBody LoginRequest dto) {
         return ResponseEntity.ok().body(service.login(dto));
     }
 
     @PutMapping("/me")
     public ResponseEntity<UsuarioResponse> editarPerfil(@RequestBody UsuarioRequest dto,
-                                                      @RequestHeader("Authorization") String token){
+                                                        @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(service.editarPerfil(token, dto));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioResponse> acessarPerfil(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok().body(service.acessarPerfil(token));
+    }
+
+    @DeleteMapping("me")
+    public ResponseEntity<Void> deletaUsuario(@RequestHeader("Authorization") String token){
+        service.deletaUsuario(token);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

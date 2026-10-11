@@ -10,6 +10,7 @@ import com.portifolio.controlegastos.infrastructure.entity.Usuario;
 import com.portifolio.controlegastos.infrastructure.repository.UsuarioRepository;
 import com.portifolio.controlegastos.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,20 +32,20 @@ public class UsuarioService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public UsuarioResponse criarUsuario(UsuarioRequest dto){
+    public UsuarioResponse criarUsuario(UsuarioRequest dto) {
         emailExiste(dto.email());
         Usuario entity = mapper.paraUsuarioEntity(dto);
         entity.setSenha(passwordEncoder.encode(dto.senha()));
         return mapper.paraUsuarioDTO(repository.save(entity));
     }
 
-    public void emailExiste(String email){
-        try{
+    public void emailExiste(String email) {
+        try {
             boolean existe = verificaEmailExistente(email);
-            if (existe){
+            if (existe) {
                 throw new ConflictException("Email já cadastrado" + email);
             }
-        } catch (ConflictException e){
+        } catch (ConflictException e) {
             throw new ConflictException("Email já cadastrado" + e);
         }
     }
@@ -58,7 +61,7 @@ public class UsuarioService {
                     new UsernamePasswordAuthenticationToken(dto.email(),
                             dto.senha()));
             return "Bearer " + jwtUtil.generateToken(authentication.getName());
-        } catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e){
+        } catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e) {
             throw new UnauthorizedException("Usuario ou Senha inválidos", e);
         }
     }
@@ -66,12 +69,10 @@ public class UsuarioService {
     public UsuarioResponse editarPerfil(String token, UsuarioRequest dto) {
 
         String email = jwtUtil.extrairEmailToken(token.substring(7));
-
         Usuario entity = repository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email não localizado"));
 
         mapper.atualizarUsuario(dto, entity);
-
         if (dto.senha() != null && !dto.senha().isBlank()) {
             entity.setSenha(passwordEncoder.encode(dto.senha()));
         }
@@ -80,4 +81,17 @@ public class UsuarioService {
     }
 
 
+    public UsuarioResponse acessarPerfil(String token) {
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+        Usuario entity = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Não foi possível acessar o perfil"));
+        return mapper.paraUsuarioDTO(entity);
+    }
+
+    public void deletaUsuario(String token) {
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+        Usuario entity = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Não foi possível acessar o perfil"));
+        repository.deleteById(entity.getId());
+    }
 }
