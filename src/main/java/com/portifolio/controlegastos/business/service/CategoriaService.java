@@ -12,6 +12,8 @@ import com.portifolio.controlegastos.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
@@ -25,7 +27,7 @@ public class CategoriaService {
 
         String email = jwtUtil.extrairEmailToken(token.substring(7));
         if (verificaCategoriaExistente(dto, email)){
-            throw new ConflictException("Categoria com o tipo: " + dto.tipoEnum() + " E de nome: " + dto.nome() + " já é existente");
+            throw new ConflictException("Categoria de " + dto.tipoEnum() + " do(a) " + dto.nome() + " já é existente");
         }
 
         Categoria entity = mapper.paraCategoriaEntity(dto);
@@ -41,5 +43,10 @@ public class CategoriaService {
                 dto.tipoEnum(),
                 email
         );
+    }
+
+    public List<CategoriaResponse> listarCategoriasUsuario(String token) {
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+        return mapper.paraListaCategoriasDTO(categoriaRepository.findByUsuarioEmail(email));
     }
 }
