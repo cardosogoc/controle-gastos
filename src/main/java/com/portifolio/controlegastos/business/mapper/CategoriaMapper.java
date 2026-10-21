@@ -4,6 +4,8 @@ import com.portifolio.controlegastos.business.dto.categoria.CategoriaRequest;
 import com.portifolio.controlegastos.business.dto.categoria.CategoriaResponse;
 import com.portifolio.controlegastos.infrastructure.entity.Categoria;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,4 +17,6 @@ public interface CategoriaMapper {
     CategoriaResponse paraCategoriaDTO(Categoria entity);
 
     List<CategoriaResponse> paraListaCategoriasDTO(List<Categoria> listaEntity);
+
+    void updateCategoria(CategoriaRequest dto, @MappingTarget Categoria entity);
  }

@@ -35,4 +35,10 @@ public class CategoriaController {
         service.deletaCategoria(token, id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PutMapping
+    public ResponseEntity<CategoriaResponse> atualizarCategoria(@RequestBody CategoriaRequest categoria,
+                                                                @RequestParam("id") Long id){
+        return ResponseEntity.ok().body(service.editaCategoria(categoria, id));
+    }
 }
