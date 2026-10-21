@@ -5,7 +5,9 @@ import com.portifolio.controlegastos.business.dto.categoria.CategoriaResponse;
 import com.portifolio.controlegastos.business.mapper.CategoriaMapper;
 import com.portifolio.controlegastos.exception.ConflictException;
 import com.portifolio.controlegastos.exception.NotFoundException;
+import com.portifolio.controlegastos.exception.UnauthorizedException;
 import com.portifolio.controlegastos.infrastructure.entity.Categoria;
+import com.portifolio.controlegastos.infrastructure.entity.Usuario;
 import com.portifolio.controlegastos.infrastructure.repository.CategoriaRepository;
 import com.portifolio.controlegastos.infrastructure.repository.UsuarioRepository;
 import com.portifolio.controlegastos.infrastructure.security.JwtUtil;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +51,14 @@ public class CategoriaService {
     public List<CategoriaResponse> listarCategoriasUsuario(String token) {
         String email = jwtUtil.extrairEmailToken(token.substring(7));
         return mapper.paraListaCategoriasDTO(categoriaRepository.findByUsuarioEmail(email));
+    }
+
+    public void deletaCategoria(String token,Long id) {
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+        Categoria entity = categoriaRepository.findById(id).orElseThrow(() -> new NotFoundException("Categória não encontrada"));
+        if (entity.getUsuario().getEmail().equals(email)){
+            categoriaRepository.deleteById(entity.getId());
+        } else{ throw new UnauthorizedException("Usuário sem autorização"); }
+
     }
 }

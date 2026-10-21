@@ -29,4 +29,10 @@ public class CategoriaController {
     public ResponseEntity<List<CategoriaResponse>> listarCategoriasUsuario(@RequestHeader("Authorization") String token){
         return ResponseEntity.ok().body(service.listarCategoriasUsuario(token));
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletaCategoria(@RequestHeader ("Authorization") String token, @RequestParam("id") Long id){
+        service.deletaCategoria(token, id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
