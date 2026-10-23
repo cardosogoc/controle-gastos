@@ -39,7 +39,6 @@ public class Usuario implements UserDetails {
     private String email;
 
     @NotBlank
-    @Size(min = 8)
     @Column(name = "senha", nullable = false)
     private String senha;
 
