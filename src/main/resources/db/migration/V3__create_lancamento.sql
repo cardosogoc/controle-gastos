@@ -3,18 +3,17 @@ CREATE TABLE lancamento (
     descricao     VARCHAR(255)  NOT NULL,
     valor         NUMERIC(12,2) NOT NULL,
     data          DATE          NOT NULL,
-    tipo          VARCHAR(10)   NOT NULL,
     usuario_id    BIGINT        NOT NULL,
     categoria_id  BIGINT        NOT NULL,
 
     CONSTRAINT fk_lancamento_usuario
-        FOREIGN KEY (usuario_id) REFERENCES usuario (id),
+        FOREIGN KEY (usuario_id)
+        REFERENCES usuario (id)
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_lancamento_categoria
-        FOREIGN KEY (categoria_id) REFERENCES categoria (id),
-
-    CONSTRAINT ck_lancamento_tipo
-        CHECK (tipo IN ('RECEITA', 'DESPESA')),
+        FOREIGN KEY (categoria_id)
+        REFERENCES categoria (id),
 
     CONSTRAINT ck_lancamento_valor
         CHECK (valor > 0)

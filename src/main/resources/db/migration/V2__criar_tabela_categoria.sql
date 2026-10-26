@@ -6,7 +6,8 @@ CREATE TABLE categoria (
 
     CONSTRAINT fk_categoria_usuario
         FOREIGN KEY (usuario_id)
-        REFERENCES usuario(id),
+        REFERENCES usuario(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT uk_categoria_usuario_nome_tipo
         UNIQUE (usuario_id, nome, tipo),
