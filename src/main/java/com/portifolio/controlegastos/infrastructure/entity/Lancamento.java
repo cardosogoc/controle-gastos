@@ -1,6 +1,5 @@
 package com.portifolio.controlegastos.infrastructure.entity;
 
-import com.portifolio.controlegastos.infrastructure.enums.TipoEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,11 +38,6 @@ public class Lancamento {
     @NotNull
     @Column(name = "data", nullable = false)
     private LocalDate data;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
-    private TipoEnum tipoEnum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
