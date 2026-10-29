@@ -47,7 +47,7 @@ public class LancamentoService {
 
     public List<LancamentoResponse> listarLancamentos(String token) {
         String email = jwtUtil.extrairEmailToken(token.substring(7));
-        return mapper.listaLancamentoDTO(lancamentoRepository.findByUsuarioEmail(email));
+        return mapper.listaLancamentoDTO(lancamentoRepository.findByUsuarioEmailOrderByDataDesc(email));
     }
 
     public LancamentoResponse editaLancamento(String token, LancamentoRequest dto, Long id) {
