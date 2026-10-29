@@ -10,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/usuario/v1")
+@RequestMapping("/usuario")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -37,12 +35,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UsuarioResponse> acessarPerfil(@RequestHeader("Authorization") String token){
+    public ResponseEntity<UsuarioResponse> acessarPerfil(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(service.acessarPerfil(token));
     }
 
     @DeleteMapping("me")
-    public ResponseEntity<Void> deletaUsuario(@RequestHeader("Authorization") String token){
+    public ResponseEntity<Void> deletaUsuario(@RequestHeader("Authorization") String token) {
         service.deletaUsuario(token);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

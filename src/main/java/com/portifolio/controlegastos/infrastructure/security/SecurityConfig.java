@@ -2,6 +2,7 @@ package com.portifolio.controlegastos.infrastructure.security;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -47,24 +48,25 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                                //Permite o Swagger
-                                .requestMatchers(
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/swagger-ui.html"
-                                ).permitAll()
-                                // Permite acesso ao login
-                                .requestMatchers(HttpMethod.POST, "/api/usuario/v1/login")
-                                .permitAll()
-                                // Permite criação de usuários
-                                .requestMatchers(HttpMethod.POST, "/api/usuario/v1")
-                                .permitAll()
-                                // Exige autenticação para rotas de usuário
-                                //.requestMatchers("/usuario/**")
-                                //.authenticated()
-                                // Exige autenticação para todas as outras
-                                .anyRequest()
-                                .authenticated()
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        //Permite o Swagger
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        // Permite acesso ao login
+                        .requestMatchers(HttpMethod.POST, "/usuario/login")
+                        .permitAll()
+                        // Permite criação de usuários
+                        .requestMatchers(HttpMethod.POST, "/usuario")
+                        .permitAll()
+                        // Exige autenticação para rotas de usuário
+                        //.requestMatchers("/usuario/**")
+                        //.authenticated()
+                        // Exige autenticação para todas as outras
+                        .anyRequest()
+                        .authenticated()
                 )
                 // Adiciona filtro JWT antes do filtro padrão
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

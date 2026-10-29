@@ -1,10 +1,6 @@
 package com.portifolio.controlegastos.infrastructure.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,32 +14,27 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table
+@Table(name = "lancamento")
 public class Lancamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 255)
     @Column(name = "descricao", length = 255, nullable = false)
     private String descricao;
 
-    @NotNull
-    @Positive
-    @Column(name = "valor", precision = 12, scale = 2, nullable = false)
+    @Column(name = "valor", nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
 
-    @NotNull
     @Column(name = "data", nullable = false)
     private LocalDate data;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 }

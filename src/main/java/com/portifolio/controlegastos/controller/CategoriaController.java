@@ -3,6 +3,7 @@ package com.portifolio.controlegastos.controller;
 import com.portifolio.controlegastos.business.dto.categoria.CategoriaRequest;
 import com.portifolio.controlegastos.business.dto.categoria.CategoriaResponse;
 import com.portifolio.controlegastos.business.service.CategoriaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categoria/v1")
+@RequestMapping("/categoria")
 @RequiredArgsConstructor
 public class CategoriaController {
 
@@ -26,19 +27,21 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoriaResponse>> listarCategoriasUsuario(@RequestHeader("Authorization") String token){
+    public ResponseEntity<List<CategoriaResponse>> listarCategoriasUsuario(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(service.listarCategoriasUsuario(token));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deletaCategoria(@RequestHeader ("Authorization") String token, @RequestParam("id") Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletaCategoria(@RequestHeader("Authorization") String token,
+                                                @PathVariable Long id) {
         service.deletaCategoria(token, id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<CategoriaResponse> atualizarCategoria(@RequestBody CategoriaRequest categoria,
-                                                                @RequestParam("id") Long id){
-        return ResponseEntity.ok().body(service.editaCategoria(categoria, id));
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaResponse> editaCategoria(@RequestHeader("Authorization") String token,
+                                                            @PathVariable Long id,
+                                                            @Valid @RequestBody CategoriaRequest dto) {
+        return ResponseEntity.ok(service.editaCategoria(token, dto, id));
     }
 }

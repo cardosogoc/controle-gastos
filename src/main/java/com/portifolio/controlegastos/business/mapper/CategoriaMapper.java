@@ -12,11 +12,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CategoriaMapper {
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "usuario", ignore = true)
     Categoria paraCategoriaEntity(CategoriaRequest dto);
 
     CategoriaResponse paraCategoriaDTO(Categoria entity);
 
     List<CategoriaResponse> paraListaCategoriasDTO(List<Categoria> listaEntity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "usuario", ignore = true)
     void updateCategoria(CategoriaRequest dto, @MappingTarget Categoria entity);
- }
+}
