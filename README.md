@@ -1,5 +1,7 @@
 # 💰 Controle de Gastos
 
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-cardosogoc%2Fcontrole--gastos-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/cardosogoc/controle-gastos)
+
 API REST para controle financeiro pessoal. Cada usuário cadastra suas categorias de receita e despesa, registra lançamentos e consulta o resumo mensal. A autenticação é feita com **JWT** e a API é documentada com **Swagger (OpenAPI)**.
 
 Projeto de portfólio desenvolvido com Java e Spring Boot. O frontend em Angular é a próxima etapa.
@@ -83,13 +85,57 @@ As anotações do Swagger ficam em interfaces separadas (`*ControllerDocs`) para
 
 ## 🚀 Como executar
 
-### Pré-requisitos
+Há duas formas de rodar o projeto: com **Docker** (recomendada, não exige instalar Java nem PostgreSQL) ou **localmente**.
+
+### Com Docker (recomendado)
+
+**Pré-requisito:** [Docker](https://www.docker.com/) instalado e em execução.
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/cardosogoc/<nome-do-repositorio>.git
+cd <nome-do-repositorio>
+```
+
+2. Suba a aplicação e o banco de dados:
+
+```bash
+docker compose up --build
+```
+
+O Compose sobe dois containers: a API e o PostgreSQL. As migrações do Flyway rodam automaticamente na inicialização e criam as tabelas.
+
+3. Acesse:
+
+- **API:** http://localhost:8080
+- **Swagger UI:** http://localhost:8080/swagger-ui/index.html
+
+Para parar, use `Ctrl+C` ou `docker compose down`. Para apagar também os dados do banco, use `docker compose down -v`.
+
+> ⚠️ As credenciais do banco (`admin/admin`) e a chave do JWT definidas no `docker-compose.yml` são **apenas para desenvolvimento**. Não as reutilize em produção.
+
+> 💡 Se a porta `5432` já estiver em uso (por exemplo, por um PostgreSQL instalado na sua máquina), altere o mapeamento de portas do serviço `db` no `docker-compose.yml`.
+
+#### Imagem no Docker Hub
+
+A imagem da API também está publicada no [Docker Hub](https://hub.docker.com/r/cardosogoc/controle-gastos):
+
+```bash
+docker pull cardosogoc/controle-gastos:1.0
+```
+
+A imagem contém **apenas a API**. Para rodá-la sozinha, é necessário ter um PostgreSQL acessível e informar as variáveis de ambiente `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `DB_PASSWORD` e `JWT_SECRET`. Por isso, o `docker-compose.yml` é o caminho mais simples.
+
+### Execução local (sem Docker)
+
+**Pré-requisitos:**
 
 - JDK (versão definida no `pom.xml`)
-- Maven
+- Maven (ou o wrapper `./mvnw` incluído no projeto)
 - PostgreSQL em execução
 
-### Passo a passo
+**Passo a passo:**
 
 1. Clone o repositório:
 
@@ -104,19 +150,36 @@ cd <nome-do-repositorio>
 CREATE DATABASE controle_gastos;
 ```
 
-3. Configure o `application.properties` (ou `application.yml`) com os dados do seu ambiente:
+3. Confira a conexão no `application.yaml`. Por padrão, a aplicação usa o banco `controle_gastos` em `localhost:5432` com o usuário `postgres`:
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/controle_gastos
-spring.datasource.username=SEU_USUARIO
-spring.datasource.password=SUA_SENHA
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/controle_gastos
+    username: postgres
+    password: ${DB_PASSWORD}
 
-# Chave secreta e expiração do JWT: use os nomes das propriedades do seu projeto
+jwt:
+  secret: ${JWT_SECRET}
 ```
 
-> ⚠️ Nunca versione senhas ou a chave secreta do JWT. Use variáveis de ambiente.
+4. Defina as variáveis de ambiente `DB_PASSWORD` (senha do seu PostgreSQL) e `JWT_SECRET` (chave com pelo menos 32 caracteres):
 
-4. Execute a aplicação:
+```bash
+# Linux / macOS
+export DB_PASSWORD=sua_senha
+export JWT_SECRET=uma_chave_secreta_com_pelo_menos_32_caracteres
+```
+
+```powershell
+# Windows (PowerShell)
+$env:DB_PASSWORD="sua_senha"
+$env:JWT_SECRET="uma_chave_secreta_com_pelo_menos_32_caracteres"
+```
+
+> ⚠️ Nunca versione senhas ou a chave secreta do JWT. Use sempre variáveis de ambiente.
+
+5. Execute a aplicação:
 
 ```bash
 ./mvnw spring-boot:run
@@ -276,7 +339,7 @@ O esquema do banco é versionado com **Flyway** (`src/main/resources/db/migratio
 - [x] Resumo mensal
 - [x] Documentação da API com Swagger
 - [ ] Testes automatizados
-- [ ] Dockerização
+- [x] Dockerização
 - [ ] Frontend em Angular
 - [ ] Deploy
 
