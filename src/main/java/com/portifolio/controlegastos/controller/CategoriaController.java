@@ -6,7 +6,6 @@ import com.portifolio.controlegastos.business.service.CategoriaService;
 import com.portifolio.controlegastos.controller.docs.CategoriaControllerDocs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoriaController implements CategoriaControllerDocs {
 
-    private CategoriaService service;
+    private final CategoriaService service;
 
     @Override
     @PostMapping
