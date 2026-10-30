@@ -3,6 +3,7 @@ package com.portifolio.controlegastos.controller;
 import com.portifolio.controlegastos.business.dto.lancamento.LancamentoRequest;
 import com.portifolio.controlegastos.business.dto.lancamento.LancamentoResponse;
 import com.portifolio.controlegastos.business.service.LancamentoService;
+import com.portifolio.controlegastos.controller.docs.LancamentoControllerDocs;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,10 +17,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/lancamento")
 @RequiredArgsConstructor
-public class LancamentoController {
+public class LancamentoController implements LancamentoControllerDocs {
 
     private final LancamentoService service;
 
+    @Override
     @PostMapping
     public ResponseEntity<LancamentoResponse> criarLancamento(
             @RequestHeader("Authorization") String token,
@@ -27,11 +29,13 @@ public class LancamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarLancamento(token, dto));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<LancamentoResponse>> listarLancamentoUsuario(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok().body(service.listarLancamentos(token));
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<LancamentoResponse> editarLancamento(
             @RequestHeader("Authorization") String token,
@@ -40,6 +44,7 @@ public class LancamentoController {
         return ResponseEntity.ok(service.editaLancamento(token, dto, id));
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletaLancamento(@RequestHeader("Authorization") String token,
                                                  @PathVariable Long id) {
@@ -47,6 +52,7 @@ public class LancamentoController {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @GetMapping("/mes")
     public ResponseEntity<List<LancamentoResponse>> listarPorMes(
             @RequestHeader("Authorization") String token,
