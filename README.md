@@ -276,7 +276,7 @@ O esquema do banco é versionado com **Flyway** (`src/main/resources/db/migratio
 - [x] Resumo mensal
 - [x] Documentação da API com Swagger
 - [ ] Testes automatizados
-- [ ] Dockerização
+- [x] Dockerização (v. 1.1)
 - [ ] Frontend em Angular
 - [ ] Deploy
 
