@@ -1,7 +1,6 @@
 package com.portifolio.controlegastos.business.dto.usuario;
 
-public record LoginRequest(
-        String email,
-        String senha
-) {
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginRequest(@NotBlank String idToken) {
 }

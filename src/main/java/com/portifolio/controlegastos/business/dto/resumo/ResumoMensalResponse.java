@@ -6,5 +6,6 @@ public record ResumoMensalResponse(
         BigDecimal totalReceitas,
         BigDecimal totalDespesas,
         BigDecimal saldo
+
 ) {
 }

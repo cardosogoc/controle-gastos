@@ -1,11 +1,11 @@
-
 package com.portifolio.controlegastos.controller;
 
-import com.portifolio.controlegastos.business.dto.usuario.*;
+import com.portifolio.controlegastos.business.dto.usuario.LoginRequest;
+import com.portifolio.controlegastos.business.dto.usuario.UsuarioRequest;
+import com.portifolio.controlegastos.business.dto.usuario.UsuarioResponse;
 import com.portifolio.controlegastos.business.service.UsuarioService;
 import com.portifolio.controlegastos.controller.docs.UsuarioControllerDocs;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController implements UsuarioControllerDocs {
 
     private final UsuarioService service;
-
-    @Override
-    @PostMapping
-    public ResponseEntity<UsuarioResponse> criarUsuario(UsuarioRequest dto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.criarUsuario(dto));
-    }
 
     @Override
     @PostMapping("/login")

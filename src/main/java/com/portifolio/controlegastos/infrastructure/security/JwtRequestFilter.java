@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     // Valida token
                     if (jwtUtil.validateToken(token, email)) {
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                                userDetails,null, userDetails.getAuthorities());
+                                userDetails, null, userDetails.getAuthorities());
                         // Define autenticação
                         SecurityContextHolder
                                 .getContext()
@@ -71,7 +72,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write(
-                    buildError(HttpStatus.UNAUTHORIZED.value(),"Token expirado", request.getRequestURI()));
+                    buildError(HttpStatus.UNAUTHORIZED.value(), "Token expirado", request.getRequestURI()));
         }
 
 
@@ -88,6 +89,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                             HttpStatus.UNAUTHORIZED.value(), "Token inválido",
                             request.getRequestURI())
             );
+        } catch (UsernameNotFoundException e) {
+            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    buildError(HttpStatus.UNAUTHORIZED.value(), "Usuário não encontrado",
+                            request.getRequestURI()));
         }
     }
 

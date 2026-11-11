@@ -11,8 +11,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
-    Usuario paraUsuarioEntity(UsuarioRequest dto);
-
     UsuarioResponse paraUsuarioDTO(Usuario entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
