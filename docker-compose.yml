@@ -29,7 +29,8 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
       DB_PASSWORD: admin
-      JWT_SECRET: k8Vq2xN7rT5pLw9ZcY3mHb6JdF1sGa4UeR0oXtI8nQvWzPyA2hMlCjB5kS7uDgE9
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
 
 volumes:
   pgdata:

@@ -39,8 +39,8 @@ public class Usuario implements UserDetails {
     private String email;
 
     @NotBlank
-    @Column(name = "senha", nullable = false)
-    private String senha;
+    @Column(name = "google_id", nullable = false, unique = true)
+    private String googleId;
 
     @Size(max = 20)
     @Column(name = "telefone", length = 20)
@@ -53,7 +53,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return senha;
+        return null;
     }
 
     @Override

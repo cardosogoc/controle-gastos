@@ -16,19 +16,12 @@ public class UserDetailsServiceImpl
         this.usuarioRepository = usuarioRepository;
     }
 
-    // Implementação do método para carregar usuário pelo email
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        var user = usuarioRepository
+        return usuarioRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-
-        // Constrói UserDetails usado pelo Spring Security
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .build();
     }
 }

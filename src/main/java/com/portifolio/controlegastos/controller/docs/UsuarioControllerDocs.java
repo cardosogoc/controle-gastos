@@ -1,4 +1,3 @@
-
 package com.portifolio.controlegastos.controller.docs;
 
 import com.portifolio.controlegastos.business.dto.usuario.LoginRequest;
@@ -8,8 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,24 +17,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface UsuarioControllerDocs {
 
     @Operation(
-            summary = "Cadastrar usuário",
-            description = "Realiza o cadastro de um novo usuário."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-            @ApiResponse(responseCode = "409", description = "E-mail já cadastrado")
-    })
-    ResponseEntity<UsuarioResponse> criarUsuario(@RequestBody UsuarioRequest dto);
-
-
-    @Operation(
-            summary = "Autenticar usuário",
-            description = "Valida as credenciais e retorna um token JWT."
+            summary = "Entrar com Google",
+            description = "Recebe o ID token do Google, valida, cria o usuário no primeiro acesso e retorna um token JWT."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
-            @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
+            @ApiResponse(responseCode = "401", description = "Token do Google inválido")
     })
     ResponseEntity<String> login(@RequestBody LoginRequest dto);
 

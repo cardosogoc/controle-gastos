@@ -20,3 +20,6 @@ jwt:
 
 server:
   port: 8080
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
